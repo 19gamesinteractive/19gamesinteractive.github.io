@@ -70,7 +70,9 @@ a{color:var(--fg);text-underline-offset:4px}
 a:focus-visible,button:focus-visible,.k:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
 footer{max-width:920px;margin:0 auto;padding:40px 24px 120px;color:var(--dim);font-size:13px;border-top:1px solid var(--line)}
 /* chasse aux 19 */
-.k{position:absolute;font-family:var(--px);font-size:13px;color:var(--fg);opacity:.1;background:none;border:0;padding:6px;cursor:pointer;transition:opacity .25s;z-index:3}
+.k{position:absolute;font-family:var(--px);font-size:12px;color:var(--fg);opacity:.22;background:none;border:0;padding:12px;min-width:44px;min-height:44px;cursor:pointer;transition:opacity .25s;z-index:3}
+#count.fl{background:var(--fg);color:#000}
+@media(hover:none){.k{opacity:.3}}
 .k:hover,.k:focus-visible{opacity:.9}
 .k.got{opacity:.9;pointer-events:none;text-decoration:line-through}
 #count{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:10;background:#000;border:1px solid var(--fg);font-family:var(--px);font-size:13px;padding:8px 12px}
@@ -97,7 +99,7 @@ footer{max-width:920px;margin:0 auto;padding:40px 24px 120px;color:var(--dim);fo
   <div class="hero-in" id="heroin">
     <h1>19<br>INDUSTRIES</h1>
     <div class="sub">19 GAMES INTERACTIVE</div>
-    <p class="dim" style="margin-top:28px">Que reste-t-il de nous quand tout a été perdu ? Et qui en décide ? Dix-neuf éléments sont cachés dans cette page. Cherche-les.</p>
+    <p class="dim" style="margin-top:28px">Que reste-t-il de nous quand tout a été perdu ? Et qui en décide ? Dix-neuf éléments sont cachés dans cette page. Cherche-les : un discret « 19 » dans les marges et les coins. Touche-le.</p>
   </div>
 </section>
 
@@ -220,15 +222,15 @@ try{saved=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){}
 var cnt=document.getElementById('count'),end=document.getElementById('end');
 function upd(){cnt.textContent=found+'/'+total;if(found>=total)end.classList.add('on')}
 function mk(id,host,x,y,label){var b=document.createElement('button');b.className='k';b.textContent=label;
- b.setAttribute('aria-label','Élément caché');b.style.left=x+'%';b.style.top=y+'%';
+ b.setAttribute('aria-label','Élément caché');b.style.left='min('+x+'%,calc(100% - 48px))';b.style.top='min('+y+'%,calc(100% - 48px))';
  if(saved.indexOf(id)>-1){b.classList.add('got');found++}
- b.addEventListener('click',function(){if(b.classList.contains('got'))return;b.classList.add('got');found++;saved.push(id);
+ b.addEventListener('click',function(){if(b.classList.contains('got'))return;b.classList.add('got');found++;saved.push(id);cnt.classList.add('fl');setTimeout(function(){cnt.classList.remove('fl')},500);
   try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}upd()});
  host.appendChild(b)}
-pos.forEach(function(p,n){var h=document.getElementById(p[0]);mk(n,h,p[1],p[2],'#'+(n+1))});
+pos.forEach(function(p,n){var h=document.getElementById(p[0]);mk(n,h,p[1],p[2],'19')});
 /* le 19ème : dans le pied de page */
 var f=document.querySelector('footer');f.style.position='relative';
-mk(18,f,50,40,'#19');
+mk(18,f,50,40,'19');
 upd();
 if(found>=total)end.classList.remove('on');
 document.getElementById('close').onclick=function(){end.classList.remove('on')};
